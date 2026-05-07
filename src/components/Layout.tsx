@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { LayoutDashboard, AlertCircle, BarChart2, Network, Settings, Building, Users, ActivitySquare, Sun, Moon, ShieldCheck, Database, Terminal, Target, Activity } from 'lucide-react';
+import { LayoutDashboard, AlertCircle, BarChart2, Network, Settings, Building, Users, ActivitySquare, Sun, Moon, ShieldCheck, Database, Terminal, Target, Activity, LogOut } from 'lucide-react';
 import { useProject } from '../context/ProjectContext';
 
 const Sidebar: React.FC = () => {
@@ -62,6 +62,7 @@ const Sidebar: React.FC = () => {
 export const Layout: React.FC = () => {
   const { user, authorizedProjects, selectedProject, setSelectedProject } = useProject();
   const [isDark, setIsDark] = useState(true);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
 
   useEffect(() => {
     if (isDark) {
@@ -116,14 +117,33 @@ export const Layout: React.FC = () => {
               {isDark ? <Sun size={20} /> : <Moon size={20} />}
             </button>
 
-            <div className="flex items-center gap-3">
-              <div className="flex flex-col items-end">
-                <span className="text-sm font-semibold">{user.name}</span>
-                <span className="text-xs text-text-secondary">{user.role}</span>
+            <div className="relative">
+              <div 
+                className="flex items-center gap-3 cursor-pointer"
+                onClick={() => setIsProfileOpen(!isProfileOpen)}
+              >
+                <div className="flex flex-col items-end">
+                  <span className="text-sm font-semibold">{user.name}</span>
+                  <span className="text-xs text-text-secondary">{user.role}</span>
+                </div>
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-accent-purple to-accent-cyan flex items-center justify-center text-white font-bold text-sm">
+                  {user.name.charAt(0)}
+                </div>
               </div>
-              <div className="w-9 h-9 rounded-full bg-gradient-to-br from-accent-purple to-accent-cyan flex items-center justify-center text-white font-bold text-sm">
-                {user.name.charAt(0)}
-              </div>
+              
+              {isProfileOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-bg-card border border-border-color rounded-lg shadow-lg py-1 z-50">
+                  <button 
+                    className="w-full flex items-center gap-2 px-4 py-2 text-text-secondary hover:bg-bg-cardHover hover:text-accent-purple transition-colors"
+                    onClick={() => {
+                      setIsProfileOpen(false);
+                    }}
+                  >
+                    <LogOut size={16} />
+                    <span>Logout</span>
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </header>
