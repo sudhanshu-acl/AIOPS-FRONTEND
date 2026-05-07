@@ -20,20 +20,19 @@ const Sidebar: React.FC = () => {
 
   return (
     <div className="w-[260px] bg-bg-card border-r border-border-color flex flex-col py-6 px-4">
-      <div className="flex items-center gap-3 pb-8 pl-2 border-b border-border-color mb-6">
+      <div className="flex items-center gap-3 pb-8 pl-2 border-b border-border-color mb-6 flex-shrink-0">
         <Network className="text-accent-cyan" size={28} />
         <span className="text-gradient font-bold text-xl">AIOps Core</span>
       </div>
-      <nav className="flex flex-col gap-2 flex-1">
+      <nav className="flex flex-col gap-2 flex-1 overflow-y-auto pr-2 custom-scrollbar min-h-0">
         {navItems.map((item) => (
-          <NavLink 
-            key={item.name} 
-            to={item.path} 
-            className={({ isActive }) => 
-              `flex items-center gap-4 py-3 px-4 rounded-lg transition-all duration-200 font-medium ${
-                isActive 
-                  ? 'bg-accent-cyan/10 text-accent-cyan relative before:content-[""] before:absolute before:-left-4 before:top-[10%] before:h-[80%] before:w-1 before:bg-accent-cyan before:rounded-r'
-                  : 'text-text-secondary hover:bg-bg-cardHover hover:text-text-primary'
+          <NavLink
+            key={item.name}
+            to={item.path}
+            className={({ isActive }) =>
+              `flex items-center gap-4 py-3 px-4 rounded-lg transition-all duration-200 font-medium ${isActive
+                ? 'bg-accent-cyan/10 text-accent-cyan relative before:content-[""] before:absolute before:-left-4 before:top-[10%] before:h-[80%] before:w-1 before:bg-accent-cyan before:rounded-r'
+                : 'text-text-secondary hover:bg-bg-cardHover hover:text-text-primary'
               }`
             }
           >
@@ -42,14 +41,13 @@ const Sidebar: React.FC = () => {
           </NavLink>
         ))}
       </nav>
-      <div className="pt-4 border-t border-border-color">
-        <NavLink 
+      <div className="pt-4 border-t border-border-color mt-2 flex-shrink-0">
+        <NavLink
           to="/settings"
-          className={({ isActive }) => 
-            `flex items-center gap-4 w-full py-3 px-4 rounded-lg font-medium transition-all duration-200 ${
-              isActive 
-                ? 'bg-accent-cyan/10 text-accent-cyan'
-                : 'text-text-secondary hover:bg-bg-cardHover hover:text-text-primary'
+          className={({ isActive }) =>
+            `flex items-center gap-4 w-full py-3 px-4 rounded-lg font-medium transition-all duration-200 ${isActive
+              ? 'bg-accent-cyan/10 text-accent-cyan'
+              : 'text-text-secondary hover:bg-bg-cardHover hover:text-text-primary'
             }`
           }
         >
@@ -80,11 +78,11 @@ export const Layout: React.FC = () => {
       <Sidebar />
       <div className="flex-1 flex flex-col bg-bg-dark">
         <header className="h-[70px] flex items-center justify-between px-8 bg-bg-dark border-b border-border-color">
-          
+
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2 bg-bg-card border border-border-color rounded-lg px-3 py-2">
               <Building size={18} className="text-accent-purple" />
-              <select 
+              <select
                 className="bg-transparent border-none text-text-primary text-sm font-medium focus:outline-none cursor-pointer"
                 value={selectedProject?.id || ''}
                 onChange={(e) => {
@@ -101,16 +99,16 @@ export const Layout: React.FC = () => {
             </div>
 
             <div className="w-[300px]">
-              <input 
-                type="text" 
-                placeholder="Search resources, alerts, etc..." 
+              <input
+                type="text"
+                placeholder="Search resources, alerts, etc..."
                 className="w-full bg-bg-card border border-border-color text-text-primary py-2 px-4 rounded-full focus:outline-none focus:border-accent-cyan font-sans"
               />
             </div>
           </div>
 
           <div className="flex items-center gap-6 font-medium">
-            <button 
+            <button
               onClick={() => setIsDark(prev => !prev)}
               className="text-text-secondary hover:text-text-primary transition-colors"
               title="Toggle Theme"

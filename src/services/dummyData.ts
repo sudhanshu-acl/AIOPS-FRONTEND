@@ -431,3 +431,35 @@ export const getProjectRcaIncidents = (projectId: string): RcaIncident[] => {
     }
   ];
 };
+
+// --- MTTR Analytics ---
+export interface MttrData {
+  day: string;
+  human: number;
+  ai: number;
+}
+
+const mttrDataStore: Record<string, MttrData[]> = {
+  'proj-1': [
+    { day: 'Mon', human: 45, ai: 12 },
+    { day: 'Tue', human: 50, ai: 15 },
+    { day: 'Wed', human: 40, ai: 10 },
+    { day: 'Thu', human: 65, ai: 18 },
+    { day: 'Fri', human: 35, ai: 8 },
+    { day: 'Sat', human: 55, ai: 14 },
+    { day: 'Sun', human: 42, ai: 11 },
+  ],
+  'proj-2': [
+    { day: 'Mon', human: 30, ai: 5 },
+    { day: 'Tue', human: 25, ai: 4 },
+    { day: 'Wed', human: 35, ai: 7 },
+    { day: 'Thu', human: 20, ai: 3 },
+    { day: 'Fri', human: 40, ai: 8 },
+    { day: 'Sat', human: 30, ai: 6 },
+    { day: 'Sun', human: 28, ai: 5 },
+  ]
+};
+
+export const getProjectMttrData = (projectId: string): MttrData[] => {
+  return mttrDataStore[projectId] || mttrDataStore['proj-1'];
+};
