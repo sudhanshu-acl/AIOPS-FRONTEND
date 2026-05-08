@@ -55,8 +55,8 @@ const ProjectManagement: React.FC = () => {
                 key={proj.id}
                 onClick={() => { setSelectedProject(proj); setExpandedServerId(null); }}
                 className={`text-left p-4 rounded-xl border transition-all duration-200 ${selectedProject?.id === proj.id
-                    ? 'bg-accent-cyan/10 border-accent-cyan text-text-primary shadow-sm'
-                    : 'bg-bg-card border-border-color text-text-secondary hover:bg-bg-cardHover hover:border-text-secondary/30'
+                  ? 'bg-accent-cyan/10 border-accent-cyan text-text-primary shadow-sm'
+                  : 'bg-bg-card border-border-color text-text-secondary hover:bg-bg-cardHover hover:border-text-secondary/30'
                   }`}
               >
                 <div className="font-semibold text-lg mb-1">{proj.name}</div>
@@ -103,7 +103,7 @@ const ProjectManagement: React.FC = () => {
                   {servers.length > 0 ? (
                     servers.map(server => (
                       <React.Fragment key={server.id}>
-                        <div 
+                        <div
                           onClick={() => toggleExpand(server.id)}
                           className={`grid grid-cols-[1.5fr_1fr_1.5fr_1.2fr_1fr_1fr_80px] py-4 px-6 items-center border-b border-border-color transition-colors duration-200 cursor-pointer last:border-b-0 hover:bg-black/5 dark:hover:bg-white/5 ${expandedServerId === server.id ? 'bg-accent-cyan/5' : ''}`}
                         >
@@ -176,7 +176,7 @@ const ProjectManagement: React.FC = () => {
                               <BrainCircuit size={18} className="text-accent-purple" />
                               AIOps Server Diagnostics
                             </h4>
-                            
+
                             <div className="flex flex-col lg:flex-row gap-6">
                               <div className="flex-1 grid grid-cols-2 gap-4">
                                 <div className="bg-bg-card border border-border-color rounded-lg p-4">
@@ -198,15 +198,15 @@ const ProjectManagement: React.FC = () => {
                                   <Sparkles size={20} className="mt-0.5 flex-shrink-0" />
                                   <div className="flex-1">
                                     <strong className="block mb-1 text-base">AI Automated Insight</strong>
-                                    {server.status === 'critical' 
+                                    {server.status === 'critical'
                                       ? `Critical alert triggered for ${server.name}. CPU usage has spiked to ${server.cpuUsage}% and connection pools are exhausted. Immediate remediation required.`
                                       : server.status === 'warning'
-                                      ? `Warning: ${server.name} is showing irregular memory allocation patterns (${server.memoryUsage}%). AI predicts exhaustion in 14 hours.`
-                                      : `${server.name} is operating optimally. All telemetry metrics are within standard historical baselines.`}
+                                        ? `Warning: ${server.name} is showing irregular memory allocation patterns (${server.memoryUsage}%). AI predicts exhaustion in 14 hours.`
+                                        : `${server.name} is operating optimally. All telemetry metrics are within standard historical baselines.`}
                                   </div>
                                 </div>
                                 <div className="mt-4 flex justify-end">
-                                  <button 
+                                  <button
                                     onClick={() => navigate('/log-explorer', { state: { serverFilter: server.name } })}
                                     className="flex items-center gap-2 bg-bg-card hover:bg-bg-dark border border-border-color hover:border-accent-cyan text-text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors"
                                   >

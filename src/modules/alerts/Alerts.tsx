@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { getAlerts, AlertSeverity, AlertStatus, Alert } from '../../services/dummyData';
 import { AlertCircle, CheckCircle, Clock, Sparkles, Server, Network, Terminal, History, UserCircle } from 'lucide-react';
 import { useProject } from '../../context/ProjectContext';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 
 interface AlertLog {
   time: string;
@@ -102,6 +103,24 @@ const Alerts: React.FC = () => {
     else setExpandedAlertId(id);
   };
 
+  const statusData = useMemo(() => {
+    return [
+      { name: 'New', value: localAlerts.filter(a => a.status === 'Open').length, fill: '#dc2626' },
+      { name: 'In progress', value: localAlerts.filter(a => a.status === 'Investigating').length, fill: '#d97706' },
+      { name: 'Resolved', value: localAlerts.filter(a => a.status === 'Closed').length, fill: '#16a34a' }
+    ];
+  }, [localAlerts]);
+
+  const severityData = useMemo(() => {
+    return [
+      { name: 'Critical', value: localAlerts.filter(a => a.severity === 'critical').length, fill: '#dc2626' },
+      { name: 'Warning', value: localAlerts.filter(a => a.severity === 'warning').length, fill: '#d97706' },
+      { name: 'Info', value: localAlerts.filter(a => a.severity === 'info').length, fill: '#3b82f6' }
+    ];
+  }, [localAlerts]);
+
+  const totalAlerts = localAlerts.length;
+
   return (
     <div className="flex flex-col">
       <div className="flex justify-between items-end mb-6">
@@ -112,6 +131,80 @@ const Alerts: React.FC = () => {
         <button className="bg-accent-cyan text-white border-none py-2 px-4 rounded-lg font-medium cursor-pointer transition-opacity duration-200 hover:opacity-90">
           Acknowledge All
         </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        {/* Alert Status Chart */}
+        <div className="bg-bg-card border border-border-color p-5 rounded-xl shadow-sm">
+          <h3 className="text-lg font-semibold mb-4 text-text-primary">Alert Status</h3>
+          <div className="h-[180px] flex items-center">
+            <ResponsiveContainer width="50%" height="100%">
+              <BarChart data={statusData} layout="vertical" margin={{ top: 5, right: 30, left: 10, bottom: 5 }}>
+                <XAxis type="number" hide />
+                <YAxis dataKey="name" type="category" hide />
+                <Tooltip cursor={{fill: 'transparent'}} contentStyle={{ backgroundColor: '#1e1e2d', borderColor: '#323248', color: '#fff' }} />
+                <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={24}>
+                  {statusData.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={entry.fill} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+            <div className="flex flex-col gap-3 ml-4 w-1/2">
+              {statusData.map(item => (
+                <div key={item.name} className="flex items-center gap-2 text-sm text-text-secondary">
+                  <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: item.fill }}></div>
+                  <span className="w-20 font-medium">{item.name}</span>
+                  <span className="font-semibold text-text-primary">
+                    {item.value} <span className="text-xs font-normal opacity-70">({totalAlerts ? Math.round((item.value / totalAlerts) * 100) : 0}%)</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Alert Severity Chart */}
+        <div className="bg-bg-card border border-border-color p-5 rounded-xl shadow-sm">
+          <h3 className="text-lg font-semibold mb-4 text-text-primary">Alert Severity</h3>
+          <div className="h-[180px] flex items-center justify-between">
+            <div className="relative w-[180px] h-full flex-shrink-0">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={severityData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={55}
+                    outerRadius={75}
+                    paddingAngle={3}
+                    dataKey="value"
+                    stroke="none"
+                  >
+                    {severityData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} />
+                    ))}
+                  </Pie>
+                  <Tooltip contentStyle={{ backgroundColor: '#1e1e2d', borderColor: '#323248', color: '#fff', borderRadius: '8px' }} itemStyle={{ color: '#fff' }} />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
+                <span className="text-2xl font-bold text-text-primary">{totalAlerts}</span>
+              </div>
+            </div>
+            <div className="flex flex-col gap-3 flex-1 pl-4">
+              {severityData.map(item => (
+                <div key={item.name} className="flex items-center gap-2 text-sm text-text-secondary">
+                  <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: item.fill }}></div>
+                  <span className="w-16 font-medium">{item.name}</span>
+                  <span className="font-semibold text-text-primary">
+                    {item.value} <span className="text-xs font-normal opacity-70">({totalAlerts ? Math.round((item.value / totalAlerts) * 100) : 0}%)</span>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="card p-0 overflow-hidden">
