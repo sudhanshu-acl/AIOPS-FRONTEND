@@ -123,12 +123,12 @@ const Alerts: React.FC = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="flex justify-between items-end mb-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between items-start sm:items-end gap-4 sm:gap-0 mb-6">
         <div>
-          <h1 className="text-3xl font-semibold mb-1">System Alerts & Incidents</h1>
+          <h1 className="text-2xl sm:text-3xl font-semibold mb-1">System Alerts & Incidents</h1>
           <p className="text-text-secondary">Project: <span className="font-semibold text-accent-cyan">{selectedProject.name}</span></p>
         </div>
-        <button className="bg-accent-cyan text-white border-none py-2 px-4 rounded-lg font-medium cursor-pointer transition-opacity duration-200 hover:opacity-90">
+        <button className="bg-accent-cyan text-white border-none py-2 px-4 rounded-lg font-medium cursor-pointer transition-opacity duration-200 hover:opacity-90 w-full sm:w-auto">
           Acknowledge All
         </button>
       </div>
@@ -137,20 +137,22 @@ const Alerts: React.FC = () => {
         {/* Alert Status Chart */}
         <div className="bg-bg-card border border-border-color p-5 rounded-xl shadow-sm">
           <h3 className="text-lg font-semibold mb-4 text-text-primary">Alert Status</h3>
-          <div className="h-[180px] flex items-center">
-            <ResponsiveContainer width="50%" height="100%">
-              <BarChart data={statusData} layout="vertical" margin={{ top: 5, right: 30, left: 10, bottom: 5 }}>
-                <XAxis type="number" hide />
-                <YAxis dataKey="name" type="category" hide />
-                <Tooltip cursor={{fill: 'transparent'}} contentStyle={{ backgroundColor: '#1e1e2d', borderColor: '#323248', color: '#fff' }} />
-                <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={24}>
-                  {statusData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-            <div className="flex flex-col gap-3 ml-4 w-1/2">
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <div className="w-full sm:w-1/2 h-[180px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={statusData} layout="vertical" margin={{ top: 5, right: 30, left: 10, bottom: 5 }}>
+                  <XAxis type="number" hide />
+                  <YAxis dataKey="name" type="category" hide />
+                  <Tooltip cursor={{fill: 'transparent'}} contentStyle={{ backgroundColor: '#1e1e2d', borderColor: '#323248', color: '#fff' }} />
+                  <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={24}>
+                    {statusData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div className="flex flex-col gap-3 w-full sm:w-1/2 sm:ml-4">
               {statusData.map(item => (
                 <div key={item.name} className="flex items-center gap-2 text-sm text-text-secondary">
                   <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: item.fill }}></div>
@@ -167,8 +169,8 @@ const Alerts: React.FC = () => {
         {/* Alert Severity Chart */}
         <div className="bg-bg-card border border-border-color p-5 rounded-xl shadow-sm">
           <h3 className="text-lg font-semibold mb-4 text-text-primary">Alert Severity</h3>
-          <div className="h-[180px] flex items-center justify-between">
-            <div className="relative w-[180px] h-full flex-shrink-0">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="relative w-[180px] h-[180px] flex-shrink-0">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <Pie
@@ -192,7 +194,7 @@ const Alerts: React.FC = () => {
                 <span className="text-2xl font-bold text-text-primary">{totalAlerts}</span>
               </div>
             </div>
-            <div className="flex flex-col gap-3 flex-1 pl-4">
+            <div className="flex flex-col gap-3 w-full sm:flex-1 sm:pl-4">
               {severityData.map(item => (
                 <div key={item.name} className="flex items-center gap-2 text-sm text-text-secondary">
                   <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: item.fill }}></div>
@@ -208,23 +210,25 @@ const Alerts: React.FC = () => {
       </div>
 
       <div className="card p-0 overflow-hidden">
-        <div className="grid grid-cols-[100px_100px_2fr_120px_180px_100px] py-4 px-6 bg-bg-dark/50 border-b border-border-color font-semibold text-text-secondary text-sm uppercase">
-          <div>ID</div>
-          <div>Severity</div>
-          <div>Message</div>
-          <div>Time</div>
-          <div>Status</div>
-          <div>Actions</div>
-        </div>
+        <div className="overflow-x-auto custom-scrollbar">
+          <div className="min-w-[900px]">
+            <div className="grid grid-cols-[100px_100px_2fr_120px_180px_100px] py-4 px-6 bg-bg-dark/50 border-b border-border-color font-semibold text-text-secondary text-sm uppercase">
+              <div>ID</div>
+              <div>Severity</div>
+              <div>Message</div>
+              <div>Time</div>
+              <div>Status</div>
+              <div>Actions</div>
+            </div>
 
-        <div className="flex flex-col">
-          {localAlerts.length > 0 ? (
-            localAlerts.map(alert => (
-              <React.Fragment key={alert.id}>
-                <div
-                  className={`grid grid-cols-[100px_100px_2fr_120px_180px_100px] py-5 px-6 items-center border-b border-border-color transition-colors duration-200 cursor-pointer last:border-b-0 hover:bg-white/5 ${expandedAlertId === alert.id ? 'bg-white/5' : ''}`}
-                  onClick={() => toggleExpand(alert.id)}
-                >
+            <div className="flex flex-col">
+              {localAlerts.length > 0 ? (
+                localAlerts.map(alert => (
+                  <React.Fragment key={alert.id}>
+                    <div
+                      className={`grid grid-cols-[100px_100px_2fr_120px_180px_100px] py-5 px-6 items-center border-b border-border-color transition-colors duration-200 cursor-pointer last:border-b-0 hover:bg-white/5 ${expandedAlertId === alert.id ? 'bg-white/5' : ''}`}
+                      onClick={() => toggleExpand(alert.id)}
+                    >
                   <div className="font-medium text-text-secondary">{alert.id}</div>
                   <div>
                     <span className={`py-1 px-2 rounded-full text-xs font-semibold uppercase ${getSeverityClass(alert.severity)}`}>
@@ -275,7 +279,7 @@ const Alerts: React.FC = () => {
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                           <div className="bg-bg-card border border-border-color rounded-lg p-4">
                             <div className="text-xs text-text-secondary mb-1 flex items-center gap-1"><Network size={14} /> Affected Infrastructure</div>
                             <div className="flex flex-wrap gap-2 mt-2">
@@ -320,11 +324,13 @@ const Alerts: React.FC = () => {
                 )}
               </React.Fragment>
             ))
-          ) : (
-            <div className="py-8 text-center text-text-secondary">
-              No alerts found for this project.
+              ) : (
+                <div className="py-8 text-center text-text-secondary">
+                  No alerts found for this project.
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </div>
     </div>
