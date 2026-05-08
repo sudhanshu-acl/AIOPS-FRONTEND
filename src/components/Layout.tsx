@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { LayoutDashboard, AlertCircle, BarChart2, Network, Settings, Building, Users, ActivitySquare, Sun, Moon, ShieldCheck, Database, Terminal, Target, Activity, LogOut } from 'lucide-react';
 import { useProject } from '../context/ProjectContext';
+import Dropdown from './Dropdown';
 
 const Sidebar: React.FC = () => {
   const navItems = [
@@ -81,22 +82,18 @@ export const Layout: React.FC = () => {
         <header className="h-[70px] flex items-center justify-between px-8 bg-bg-dark border-b border-border-color">
 
           <div className="flex items-center gap-4">
-            <div className="flex items-center gap-2 bg-bg-card border border-border-color rounded-lg px-3 py-2">
+            <div className="flex items-center gap-2 bg-bg-card border border-border-color rounded-lg px-3 py-1.5">
               <Building size={18} className="text-accent-purple" />
-              <select
-                className="bg-transparent border-none text-text-primary text-sm font-medium focus:outline-none cursor-pointer"
+              <Dropdown
+                items={authorizedProjects.map(proj => ({ label: proj.name, value: proj.id }))}
                 value={selectedProject?.id || ''}
-                onChange={(e) => {
-                  const proj = authorizedProjects.find(p => p.id === e.target.value);
+                onChange={(val) => {
+                  const proj = authorizedProjects.find(p => p.id === val);
                   if (proj) setSelectedProject(proj);
                 }}
-              >
-                {authorizedProjects.map(proj => (
-                  <option key={proj.id} value={proj.id} className="bg-bg-card text-text-primary">
-                    {proj.name}
-                  </option>
-                ))}
-              </select>
+                triggerClassName="bg-transparent border-none px-2 py-1 shadow-none hover:bg-transparent !p-0 gap-1"
+                menuClassName="w-[200px]"
+              />
             </div>
 
             <div className="w-[300px]">
