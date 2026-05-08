@@ -15,6 +15,8 @@ import ActivityLogs from './modules/logs/ActivityLogs';
 import Settings from './modules/settings/Settings';
 import { ProjectProvider } from './context/ProjectContext';
 
+console.log("Test code ");
+
 function App() {
   return (
     <ProjectProvider>

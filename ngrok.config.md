@@ -34,3 +34,6 @@ ngrok http 8000
 ![alt text](image-1.png)
 
 
+- To know more visit [Getting started](https://ngrok.com/docs/getting-started)
+
+
