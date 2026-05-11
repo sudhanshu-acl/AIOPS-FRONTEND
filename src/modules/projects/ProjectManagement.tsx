@@ -8,6 +8,8 @@ import { LineChart, Line, ResponsiveContainer } from 'recharts';
 const ProjectManagement: React.FC = () => {
   const { authorizedProjects, selectedProject, setSelectedProject } = useProject();
   const [expandedServerId, setExpandedServerId] = useState<string | null>(null);
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+  const [isServerModalOpen, setIsServerModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const servers = selectedProject ? getProjectServers(selectedProject.id) : [];
@@ -39,7 +41,10 @@ const ProjectManagement: React.FC = () => {
           <Building className="text-accent-cyan" size={32} />
           <h1 className="text-3xl font-semibold mb-0">Project & Server Management</h1>
         </div>
-        <button className="flex items-center gap-2 bg-bg-card border border-border-color text-text-primary py-2 px-4 rounded-lg font-medium cursor-pointer hover:bg-bg-cardHover transition-colors">
+        <button
+          onClick={() => setIsProjectModalOpen(true)}
+          className="flex items-center gap-2 bg-accent-cyan text-white border-none py-2 px-4 rounded-lg font-medium cursor-pointer transition-opacity duration-200 hover:opacity-90"
+        >
           <Plus size={18} />
           New Project
         </button>
@@ -82,7 +87,10 @@ const ProjectManagement: React.FC = () => {
                   <p className="text-text-secondary text-sm mt-2">{selectedProject.description}</p>
                   <p className="text-text-secondary text-xs mt-1">Created: {selectedProject.createdAt}</p>
                 </div>
-                <button className="flex items-center gap-2 bg-accent-cyan text-white border-none py-2 px-4 rounded-lg font-medium cursor-pointer transition-opacity duration-200 hover:opacity-90">
+                <button
+                  onClick={() => setIsServerModalOpen(true)}
+                  className="flex items-center gap-2 bg-accent-cyan text-white border-none py-2 px-4 rounded-lg font-medium cursor-pointer transition-opacity duration-200 hover:opacity-90"
+                >
                   <Server size={18} />
                   Provision Server
                 </button>
@@ -238,6 +246,72 @@ const ProjectManagement: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* New Project Modal */}
+      {isProjectModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-bg-dark border border-border-color rounded-xl w-full max-w-lg p-6 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <h3 className="text-xl font-bold text-text-primary mb-4">Create New Project</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-text-secondary mb-1">Project Name</label>
+                <input type="text" className="w-full bg-bg-card border border-border-color rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:border-accent-cyan" placeholder="e.g. Production Cluster" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-text-secondary mb-1">Description</label>
+                <textarea className="w-full bg-bg-card border border-border-color rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:border-accent-cyan" rows={3} placeholder="Brief description of the project" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-text-secondary mb-1">Environment</label>
+                <select className="w-full bg-bg-card border border-border-color rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:border-accent-cyan">
+                  <option>Production</option>
+                  <option>Staging</option>
+                  <option>Development</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex justify-end gap-3 mt-8">
+              <button onClick={() => setIsProjectModalOpen(false)} className="px-4 py-2 text-text-secondary hover:text-text-primary transition-colors cursor-pointer">Cancel</button>
+              <button onClick={() => setIsProjectModalOpen(false)} className="bg-accent-cyan text-white px-6 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity cursor-pointer">Create Project</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Provision Server Modal */}
+      {isServerModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-bg-dark border border-border-color rounded-xl w-full max-w-lg p-6 shadow-2xl animate-in fade-in zoom-in duration-200">
+            <h3 className="text-xl font-bold text-text-primary mb-4">Provision New Server</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-text-secondary mb-1">Server Name</label>
+                <input type="text" className="w-full bg-bg-card border border-border-color rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:border-accent-cyan" placeholder="e.g. app-worker-01" />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-text-secondary mb-1">Instance Type</label>
+                <select className="w-full bg-bg-card border border-border-color rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:border-accent-cyan">
+                  <option>Compute Optimized (c5.large)</option>
+                  <option>Memory Optimized (r5.large)</option>
+                  <option>General Purpose (t3.medium)</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-text-secondary mb-1">Region</label>
+                <select className="w-full bg-bg-card border border-border-color rounded-lg px-4 py-2 text-text-primary focus:outline-none focus:border-accent-cyan">
+                  <option>us-east-1</option>
+                  <option>eu-west-1</option>
+                  <option>ap-south-1</option>
+                </select>
+              </div>
+            </div>
+            <div className="flex justify-end gap-3 mt-8">
+              <button onClick={() => setIsServerModalOpen(false)} className="px-4 py-2 text-text-secondary hover:text-text-primary transition-colors cursor-pointer">Cancel</button>
+              <button onClick={() => setIsServerModalOpen(false)} className="bg-accent-purple text-white px-6 py-2 rounded-lg font-medium hover:opacity-90 transition-opacity cursor-pointer">Provision</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
