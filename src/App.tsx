@@ -14,6 +14,7 @@ import LogExplorer from './modules/logs/LogExplorer';
 import ActivityLogs from './modules/logs/ActivityLogs';
 import Settings from './modules/settings/Settings';
 import { ProjectProvider } from './context/ProjectContext';
+import Login from './modules/auth/Login';
 
 console.log("Test code ");
 
@@ -36,6 +37,7 @@ function App() {
             <Route path="logs" element={<ActivityLogs />} />
             <Route path="settings" element={<Settings />} />
           </Route>
+          <Route path='login' element={<Login />} />
         </Routes>
       </BrowserRouter>
     </ProjectProvider>
