@@ -55,45 +55,49 @@ const Users: React.FC = () => {
         </button>
       </div>
 
-      <div className="card p-0 overflow-hidden flex-1">
-        <div className="grid grid-cols-[1fr_1.5fr_2fr_100px] py-4 px-6 bg-bg-dark/50 border-b border-border-color font-semibold text-text-secondary text-sm uppercase">
-          <div>User</div>
-          <div>Role</div>
-          <div>Authorized Projects</div>
-          <div className="text-right">Actions</div>
-        </div>
-        
-        <div className="flex flex-col overflow-y-auto">
-          {usersList.map(user => (
-            <div key={user.id} className="grid grid-cols-[1fr_1.5fr_2fr_100px] py-5 px-6 items-center border-b border-border-color transition-colors duration-200 last:border-b-0 hover:bg-black/5 dark:hover:bg-white/5">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent-purple to-accent-cyan flex items-center justify-center text-white font-bold text-xs">
-                  {user.name.charAt(0)}
-                </div>
-                <span className="font-medium text-text-primary">{user.name}</span>
-              </div>
-              
-              <div className="flex items-center gap-2">
-                <Shield size={16} className={user.role === 'System Admin' ? 'text-accent-purple' : 'text-text-secondary'} />
-                <span className="text-text-primary">{user.role}</span>
-              </div>
-              
-              <div className="flex flex-wrap gap-2">
-                {getProjectNames(user.authorizedProjectIds).map((projName, idx) => (
-                  <span key={idx} className="bg-bg-card border border-border-color py-1 px-2 rounded text-xs font-medium text-text-secondary">
-                    {projName}
-                  </span>
-                ))}
-                {user.authorizedProjectIds.length === 0 && <span className="text-xs text-text-secondary italic">No access</span>}
-              </div>
-              
-              <div className="text-right">
-                <button className="bg-transparent border-none cursor-pointer text-text-secondary hover:text-accent-cyan p-2 transition-colors">
-                  <Edit2 size={18} />
-                </button>
-              </div>
+      <div className="card p-0 overflow-hidden flex-1 flex flex-col">
+        <div className="overflow-x-auto custom-scrollbar flex-1">
+          <div className="min-w-[700px]">
+            <div className="grid grid-cols-[1fr_1.5fr_2fr_100px] py-4 px-6 bg-bg-dark/50 border-b border-border-color font-semibold text-text-secondary text-sm uppercase">
+              <div>User</div>
+              <div>Role</div>
+              <div>Authorized Projects</div>
+              <div className="text-right">Actions</div>
             </div>
-          ))}
+            
+            <div className="flex flex-col">
+              {usersList.map(user => (
+                <div key={user.id} className="grid grid-cols-[1fr_1.5fr_2fr_100px] py-5 px-6 items-center border-b border-border-color transition-colors duration-200 last:border-b-0 hover:bg-black/5 dark:hover:bg-white/5">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent-purple to-accent-cyan flex items-center justify-center text-white font-bold text-xs shrink-0">
+                      {user.name.charAt(0)}
+                    </div>
+                    <span className="font-medium text-text-primary">{user.name}</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-2">
+                    <Shield size={16} className={user.role === 'System Admin' ? 'text-accent-purple' : 'text-text-secondary'} />
+                    <span className="text-text-primary">{user.role}</span>
+                  </div>
+                  
+                  <div className="flex flex-wrap gap-2">
+                    {getProjectNames(user.authorizedProjectIds).map((projName, idx) => (
+                      <span key={idx} className="bg-bg-card border border-border-color py-1 px-2 rounded text-xs font-medium text-text-secondary">
+                        {projName}
+                      </span>
+                    ))}
+                    {user.authorizedProjectIds.length === 0 && <span className="text-xs text-text-secondary italic">No access</span>}
+                  </div>
+                  
+                  <div className="text-right">
+                    <button className="bg-transparent border-none cursor-pointer text-text-secondary hover:text-accent-cyan p-2 transition-colors">
+                      <Edit2 size={18} />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 

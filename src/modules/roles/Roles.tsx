@@ -67,11 +67,11 @@ const Roles: React.FC = () => {
         </button>
       </div>
 
-      <div className="flex gap-6 flex-1 h-full min-h-[500px]">
+      <div className="flex flex-col md:flex-row gap-6 flex-1 min-h-[500px] overflow-hidden">
         {/* Roles List Sidebar */}
-        <div className="w-[300px] flex flex-col gap-3">
+        <div className="w-full md:w-[300px] flex flex-col gap-3 shrink-0 max-h-[300px] md:max-h-none overflow-y-auto custom-scrollbar">
           <h2 className="text-lg font-semibold text-text-secondary px-2">System Roles</h2>
-          <div className="flex flex-col gap-2 overflow-y-auto pr-2">
+          <div className="flex flex-col gap-2 pr-2">
             {rolesList.map(role => (
               <button
                 key={role.id}

@@ -41,11 +41,11 @@ const RootCauseAnalysis: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex gap-6 flex-1 h-full min-h-[600px]">
+      <div className="flex flex-col md:flex-row gap-6 flex-1 min-h-[600px] overflow-hidden">
         {/* Incidents Sidebar */}
-        <div className="w-[320px] flex flex-col gap-3">
+        <div className="w-full md:w-[320px] flex flex-col gap-3 shrink-0 max-h-[300px] md:max-h-none overflow-y-auto custom-scrollbar">
           <h2 className="text-lg font-semibold text-text-secondary px-2">Active Incidents</h2>
-          <div className="flex flex-col gap-2 overflow-y-auto pr-2">
+          <div className="flex flex-col gap-2 pr-2">
             {incidents.length > 0 ? (
               incidents.map(inc => (
                 <button
