@@ -50,9 +50,9 @@ const ProjectManagement: React.FC = () => {
         </button>
       </div>
 
-      <div className="flex gap-6 flex-1 h-full min-h-[500px]">
+      <div className="flex flex-col md:flex-row gap-6 flex-1 min-h-[500px] overflow-hidden">
         {/* Projects Master List */}
-        <div className="w-[300px] flex flex-col gap-3">
+        <div className="w-full md:w-[300px] flex flex-col gap-3 shrink-0 max-h-[300px] md:max-h-none overflow-y-auto custom-scrollbar">
           <h2 className="text-lg font-semibold text-text-secondary px-2">Your Projects</h2>
           <div className="flex flex-col gap-2">
             {authorizedProjects.map(proj => (
@@ -96,16 +96,18 @@ const ProjectManagement: React.FC = () => {
                 </button>
               </div>
 
-              <div className="p-0 overflow-y-auto flex-1">
-                <div className="grid grid-cols-[1.5fr_1fr_1.5fr_1.2fr_1fr_1fr_80px] py-3 px-6 bg-bg-dark/50 border-b border-border-color font-semibold text-text-secondary text-xs uppercase sticky top-0 z-10">
-                  <div>Instance</div>
-                  <div>Region</div>
-                  <div>Resources (CPU/RAM)</div>
-                  <div>Network I/O</div>
-                  <div>1h Trend</div>
-                  <div>Status</div>
-                  <div className="text-right">Actions</div>
-                </div>
+              <div className="p-0 overflow-y-auto flex-1 flex flex-col">
+                <div className="overflow-x-auto custom-scrollbar flex-1">
+                  <div className="min-w-[900px]">
+                    <div className="grid grid-cols-[1.5fr_1fr_1.5fr_1.2fr_1fr_1fr_80px] py-3 px-6 bg-bg-dark/50 border-b border-border-color font-semibold text-text-secondary text-xs uppercase sticky top-0 z-10">
+                      <div>Instance</div>
+                      <div>Region</div>
+                      <div>Resources (CPU/RAM)</div>
+                      <div>Network I/O</div>
+                      <div>1h Trend</div>
+                      <div>Status</div>
+                      <div className="text-right">Actions</div>
+                    </div>
 
                 <div className="flex flex-col">
                   {servers.length > 0 ? (
@@ -236,6 +238,8 @@ const ProjectManagement: React.FC = () => {
                   )}
                 </div>
               </div>
+            </div>
+            </div>
             </>
           ) : (
             <div className="flex h-full items-center justify-center flex-col gap-4">
